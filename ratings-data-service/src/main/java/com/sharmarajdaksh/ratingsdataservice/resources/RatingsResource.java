@@ -20,8 +20,8 @@ public class RatingsResource {
     @GetMapping("/users/{userId}")
     public UserRating getUserRating(@PathVariable("userId") String userId) {
         return new UserRating(List.of(
-                new Rating("1234", 4),
-                new Rating("5678", 3)
+                new Rating("100", 4),
+                new Rating("200", 3)
         ));
     }
 
