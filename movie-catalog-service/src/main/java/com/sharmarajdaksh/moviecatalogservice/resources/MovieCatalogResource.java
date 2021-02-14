@@ -22,11 +22,12 @@ public class MovieCatalogResource {
     @GetMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
         // Get all rated movie IDs
-        UserRating ratings = restTemplate.getForObject("http://localhost:8082/ratingsData/users/" + userId, UserRating.class);
+        // Address is resolved via Eureka
+        UserRating ratings = restTemplate.getForObject("http://ratings-data-service/ratingsData/users/" + userId, UserRating.class);
 
         // For each movie ID, call the movie-info-service
         return ratings.getUserRating().stream().map(rating -> {
-                    Movie movie = restTemplate.getForObject("http://localhost:8081/movies/" + rating.getMovieId(), Movie.class);
+                    Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
                     return new CatalogItem(movie.getName(), "Test", rating.getRating());
                 }
         ).collect(Collectors.toList());
